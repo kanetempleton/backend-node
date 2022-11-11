@@ -2,7 +2,7 @@ const http = require('http');
 //const login = require('./login.js')
 //const utiltest = require('./util.js')
 const hostname = '127.0.0.1';
-const port = 43594;
+const port = 80;
 var fs = require('fs');
 var qs = require('querystring');
 var mysql = require('mysql');
@@ -17,7 +17,7 @@ var sqlcon = mysql.createConnection({
   port: 3306,
   user: "root",
   password: "admin",
-  database: "amazeing"
+  database: "kane"
 });
 
 sqlcon.connect(function(err) {
@@ -465,6 +465,18 @@ const requestHandler = (request, response) => {
             response.end();
         });
 
+    }
+    else if (request.url == "/resume") {
+        response.writeHeader(200, {"Content-Type": "text/html"});
+        fs.readFile('../front/resume.html', function (err, html) {
+        if (err) {
+          response.write("404 NOT FOUND: "+request.url);
+          response.end();
+        } else {
+          response.write(html);
+          response.end();
+        }
+        });
     } else {
       response.writeHeader(200, {"Content-Type": "text/html"});
       console.log("URI:"+request.url);
